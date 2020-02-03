@@ -1,7 +1,7 @@
 # fac_calc
 ## Calculator app for Founders and Coders pre-course
 
-This calculator is an implementation of the [Build a JavaScript Calculator](https://www.freecodecamp.org/learn/front-end-libraries/front-end-libraries-projects/build-a-javascript-calculator) excersize from FreeCodeCamp's Front End Libraries Projects, but without the front end libraries i.e. in vanilla JS. The calculator will use Formula/Expression logic and implement the following 13 stories.
+This calculator is an implementation of the [Build a JavaScript Calculator](https://www.freecodecamp.org/learn/front-end-libraries/front-end-libraries-projects/build-a-javascript-calculator) exercise from FreeCodeCamp's Front End Libraries Projects, but without the front end libraries i.e. in vanilla JS. The calculator will use Formula/Expression logic and implement the following 15 stories.
 
 
 1. My calculator should contain a clickable element containing an = (equal sign) with a corresponding id="equals".
