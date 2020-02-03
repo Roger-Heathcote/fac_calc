@@ -1,13 +1,13 @@
 Actions
 
     Create a calc module that returns instances of a calc class
+    Create a test file that tests the calc class
+    TDD the calc class
         Class will use Formula/Expression logic
         Class needs to support the following methods
             equals
             add_char
             clear
-    Create a test file that tests the calc class
-    TDD the calc class
     Create an index.html
     Import calc code
     Add interface code
