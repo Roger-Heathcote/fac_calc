@@ -43,7 +43,10 @@ function test(msg,a,b){
 }
 
 function addChars(calc, string) {
-    string.split('').map( (c)=>calc.add_char(c) )
+    string.split('').map( (c)=>{
+        calc.add_char(c);
+        // console.log("POST ADD:", calc.expression);   
+    })
     // console.log(calc.expression);
 }
 // TESTS
@@ -108,5 +111,95 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
     C.evaluate();
     // console.log(C.expression);
     test("Display of expression '123+-456' is '123+-456'", C.display, '123+-456');
-    test("Expression of '123+-456' is represented as [123, '+', -456]", C.expression, [123, '+', -456]);    
 }
+
+{ //Story 13 check internal representation
+    const C = NewCalc();
+    addChars(C, "123+-456");
+    C.evaluate();
+    // console.log(C.expression);
+    test("Internal representation of '123+-456' is represented as [123, '+', -456]", C.expression, [123, '+', -456]);    
+}
+{ //Story 13 check internal representation with negative predecessor.
+    const C = NewCalc();
+    addChars(C, "123--456");
+    C.evaluate();
+    // console.log(C.expression);
+    test("Internal representation of '123--456' is represented as [123, '-', 456]", C.expression, [123, '-', 456]);
+}
+{ //Story 13 triple negative ignored
+    const C = NewCalc();
+    addChars(C, "123---456");
+    C.evaluate();
+    // console.log(C.expression);
+    test("Internal representation of '123---456' is represented as [123, '-', 456]", C.expression, [123, '-', 456]);
+}
+{ //Story 13 boatload of operators ignored ignored
+    const C = NewCalc();
+    addChars(C, "123-+//+--*+*--456");
+    C.evaluate();
+    console.log(C.expression);
+    test("Internal representation of '123-+//+--*+*--456' is represented as [123, '*', -456]", C.expression, [123, '*', -456]);
+}
+{ // make sure multiple decimal points are ignored
+    const C = NewCalc();
+    addChars(C, "1.2.3+4.5.6");
+    C.evaluate();
+    console.log(C.expression);
+    test("Internal representation of '1.2.3+4.5.6' is represented as [1.23, '+', 4.56]", C.expression, [1.23, '+', 4.56]);
+}
+
+{ // make sure leading decimals are okay
+    const C = NewCalc();
+    addChars(C, ".2+.6");
+    C.evaluate();
+    console.log(C.expression);
+    test("Internal representation of '.2+.6' is represented as [0.2, '+', 0.6]", C.expression, [0.2, '+', 0.6]);
+}
+{ // get rid of leading zeros
+    const C = NewCalc();
+    addChars(C, "02+02");
+    C.evaluate();
+    console.log(C.expression);
+    test("Internal representation of '02+02' is [2, '+', 2]", C.expression, [2, '+', 2]);
+}
+{ // get rid of leading zeros 1
+    const C = NewCalc();
+    addChars(C, "02");
+    // C.evaluate();
+    console.log(C.expression);
+    test("Display of '02' is '2'", C.display, "2");
+}
+
+{ // get rid of leading zeros 2
+    const C = NewCalc();
+    addChars(C, "0.2");
+    // C.evaluate();
+    console.log(C.expression);
+    test("Display of '0.2' is '0.2'", C.display, "0.2");
+}
+
+{ // get rid of leading zeros 3
+    const C = NewCalc();
+    addChars(C, "0002000");
+    // C.evaluate();
+    console.log(C.expression);
+    test("Display of '0002000' is '2000'", C.display, "2000");
+}
+
+{ // get rid of leading zeros 4
+    const C = NewCalc();
+    addChars(C, ".1+2.000+0.345");
+    C.evaluate();
+    // console.log("POST EVAL:",C.expression);
+    test("Display of '.1+2.000+0.345' is '0.1+2.0+0.345'", C.display, "0.1+2+0.345");
+}
+{ // get rid of leading zeros 5
+    const C = NewCalc();
+    addChars(C, ".1+2.000+0.345");
+    C.evaluate();
+    // console.log("POST EVAL:",C.expression);
+    test("Internal representation of '.1+2.000+0.345' is '0.1+2.0+0.345'", C.expression, [0.1, "+", 2, "+", 0.345]);
+}
+
+
