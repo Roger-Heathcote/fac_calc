@@ -45,9 +45,7 @@ function test(msg,a,b){
 function addChars(calc, string) {
     string.split('').map( (c)=>{
         calc.add_char(c);
-        // console.log("POST ADD:", calc.expression);   
     })
-    // console.log(calc.expression);
 }
 // TESTS
 // TESTS
@@ -55,119 +53,84 @@ function addChars(calc, string) {
 
 console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
 
+// BASIC
+// BASIC
+// BASIC
 {
     const C = NewCalc()
-    test("Default val of fresh instance is zero", C.equals, 0);
+    test("Check Default val of fresh instance is zero", C.equals, 0);
 }
 {
     const C = NewCalc();
     C.add_char("3");
-    test("Value of expression '3' is 3", C.equals, 3);
+    test("Check value of expression '3' is 3", C.equals, 3);
 }
-// display method needed for story #8
-{
-    const C = NewCalc();
-    addChars(C, "123+456");
-    test("Display of expression '123+456' is '123+456'", C.display, '123+456');
-}
-// Test for story #13 - no dupes except negatives
-{
-    const C = NewCalc();
-    addChars(C, "123+*456");
-    test("Display of expression '123+*456' is '123*456'", C.display, '123*456');
-}
-// Test numbers are being parsed correctly
+
+// PARSING
+// PARSING
+// PARSING
+
+// Test parsing by looking at internal representations - needed during development, remove later
 {
     const C = NewCalc();
     addChars(C, "123");
     C.evaluate();
-    test("Test '123' is represented as [123] internally", C.expression, [123]);
+    test("Internal representation of '123' is [123]", C.expression, [123]);
 }
-// Test numbers are being parsed correctly
 {
     const C = NewCalc();
     addChars(C, "123+");
     C.evaluate();
-    test("Test '123+' is represented as [123, '+'] internally", C.expression, [123,'+']);
+    test("Internal representation of '123+' is [123, '+']", C.expression, [123,'+']);
 }
 {
     const C = NewCalc();
     addChars(C, "123+456");
     C.evaluate();
-    // console.log(C.expression);
-    test("Test '123+456' is represented as [123, '+', 456] internally", C.expression, [123,'+',456]);
+    test("Internal representation of '123+456' is [123, '+', 456]", C.expression, [123,'+',456]);
 }
 {
     const C = NewCalc();
     addChars(C, "12.3+456");
     C.evaluate();
-    // console.log(C.expression);
-    test("Test '12.3+456' is represented as [12.3, '+', 456] internally", C.expression, [12.3,'+',456]);
+    test("Internal representation of '12.3+456' is [12.3, '+', 456]", C.expression, [12.3,'+',456]);
 }
-//Test for story #13 - no dupes EXCEPT NEGATIVES
 {
     const C = NewCalc();
     addChars(C, "123+-456");
     C.evaluate();
-    // console.log(C.expression);
-    test("Display of expression '123+-456' is '123+-456'", C.display, '123+-456');
+    test("Internal representation of '123+-456' is [123, '+', -456]", C.expression, [123, '+', -456]);    
 }
 
-{ //Story 13 check internal representation
-    const C = NewCalc();
-    addChars(C, "123+-456");
-    C.evaluate();
-    // console.log(C.expression);
-    test("Internal representation of '123+-456' is represented as [123, '+', -456]", C.expression, [123, '+', -456]);    
-}
-{ //Story 13 check internal representation with negative predecessor.
-    const C = NewCalc();
-    addChars(C, "123--456");
-    C.evaluate();
-    // console.log(C.expression);
-    test("Internal representation of '123--456' is represented as [123, '-', 456]", C.expression, [123, '-', 456]);
-}
-{ //Story 13 triple negative ignored
-    const C = NewCalc();
-    addChars(C, "123---456");
-    C.evaluate();
-    // console.log(C.expression);
-    test("Internal representation of '123---456' is represented as [123, '-', 456]", C.expression, [123, '-', 456]);
-}
-{ //Story 13 boatload of operators ignored ignored
-    const C = NewCalc();
-    addChars(C, "123-+//+--*+*--456");
-    C.evaluate();
-    console.log(C.expression);
-    test("Internal representation of '123-+//+--*+*--456' is represented as [123, '*', -456]", C.expression, [123, '*', -456]);
-}
-{ // make sure multiple decimal points are ignored
-    const C = NewCalc();
-    addChars(C, "1.2.3+4.5.6");
-    C.evaluate();
-    console.log(C.expression);
-    test("Internal representation of '1.2.3+4.5.6' is represented as [1.23, '+', 4.56]", C.expression, [1.23, '+', 4.56]);
-}
+// Story #1 - Hard to test without dependencies
+// Story #2 - Hard to test without dependencies
+// Story #3 - Hard to test without dependencies
+// Story #4 - Hard to test without dependencies
+// Story #5 - Hard to test without dependencies
+// Story #6 - Hard to test without dependencies
+// Story #7 - Partly testable if clear is part of API
+// Story #8 - Hard to test without dependencies
 
-{ // make sure leading decimals are okay
-    const C = NewCalc();
-    addChars(C, ".2+.6");
-    C.evaluate();
-    console.log(C.expression);
-    test("Internal representation of '.2+.6' is represented as [0.2, '+', 0.6]", C.expression, [0.2, '+', 0.6]);
-}
+// Story #9 - Arithmetic
+// Story #9 - Arithmetic
+// Story #9 - Arithmetic
+//
+// TODO!
+
+// Story #10 - Leading zeros
+// Story #10 - Leading zeros
+// Story #10 - Leading zeros
+
 { // get rid of leading zeros
     const C = NewCalc();
     addChars(C, "02+02");
     C.evaluate();
-    console.log(C.expression);
     test("Internal representation of '02+02' is [2, '+', 2]", C.expression, [2, '+', 2]);
 }
 { // get rid of leading zeros 1
     const C = NewCalc();
     addChars(C, "02");
     // C.evaluate();
-    console.log(C.expression);
     test("Display of '02' is '2'", C.display, "2");
 }
 
@@ -175,7 +138,6 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
     const C = NewCalc();
     addChars(C, "0.2");
     // C.evaluate();
-    console.log(C.expression);
     test("Display of '0.2' is '0.2'", C.display, "0.2");
 }
 
@@ -183,7 +145,6 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
     const C = NewCalc();
     addChars(C, "0002000");
     // C.evaluate();
-    console.log(C.expression);
     test("Display of '0002000' is '2000'", C.display, "2000");
 }
 
@@ -202,4 +163,70 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
     test("Internal representation of '.1+2.000+0.345' is '0.1+2.0+0.345'", C.expression, [0.1, "+", 2, "+", 0.345]);
 }
 
+// Story #11 - Decimal points
+// Story #11 - Decimal points
+// Story #11 - Decimal points
 
+{ // make sure multiple decimal points are ignored
+    const C = NewCalc();
+    addChars(C, "1.2.3+4.5.6");
+    C.evaluate();
+    test("Internal representation of '1.2.3+4.5.6' is [1.23, '+', 4.56]", C.expression, [1.23, '+', 4.56]);
+}
+
+{ // make sure leading points are okay
+    const C = NewCalc();
+    addChars(C, ".2+.6");
+    C.evaluate();
+    test("Internal representation of '.2+.6' is [0.2, '+', 0.6]", C.expression, [0.2, '+', 0.6]);
+}
+
+// Story #12 - Arithmetic on decimal fractions
+// Story #12 - Arithmetic on decimal fractions
+// Story #12 - Arithmetic on decimal fractions
+//
+// Check it works
+
+// Story #13 - No duplicate operators except minus
+// Story #13 - No duplicate operators except minus
+// Story #13 - No duplicate operators except minus
+{
+    const C = NewCalc();
+    addChars(C, "123+*456");
+    // No operator dupes
+    test("Display of expression '123+*456' is '123*456'", C.display, '123*456');
+}
+{
+    const C = NewCalc();
+    addChars(C, "123+-456");
+    // No operator dupes EXCEPT negative numbers
+    test("Display of expression '123+-456' is '123+-456'", C.display, '123+-456');
+}
+{
+    const C = NewCalc();
+    addChars(C, "123--456");
+    // No double negative
+    test("Display of expression '123--456' is '123-456']", C.display, '123-456');
+}
+{
+    const C = NewCalc();
+    addChars(C, "123---456");
+    // Nor triple negatives
+    test("Display of expression '123---456' is '123-456'", C.display, "123-456");
+}
+{
+    const C = NewCalc();
+    addChars(C, "123-+//+--*+*--456");
+    // Nor longer sequences of operators
+    test("Display of '123-+//+--*+*--456' is '123*-456'", C.display, "123*-456");
+}
+
+// Story #14 - Operator after equals
+// Story #14 - Operator after equals
+// Story #14 - Operator after equals
+//
+// Starts new expression with result of last
+
+// Story #15 - Arithmetic precision >= 4 places
+// Story #15 - Arithmetic precision >= 4 places
+// Story #15 - Arithmetic precision >= 4 places
