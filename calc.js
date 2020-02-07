@@ -81,7 +81,6 @@ function NewCalc(){
 
             function nextMulDiv(expr){
                 // console.log("Checking for ops in:", expr);
-                let nextOp;
                 let mulIdx = expr.indexOf("*");
                 let divIdx = expr.indexOf("/");
                 if((mulIdx === -1) && (divIdx === -1)) return false;
@@ -102,6 +101,32 @@ function NewCalc(){
                 this.expression.splice(idx,2);
                 // console.log("Expr post op:", this.expression);
             }
+
+            function nextPlusMin(expr){
+                // console.log("Checking for ops in:", expr);
+                let mulIdx = expr.indexOf("+");
+                let divIdx = expr.indexOf("-");
+                if((mulIdx === -1) && (divIdx === -1)) return false;
+                if(mulIdx === -1) return divIdx;
+                if(divIdx === -1) return mulIdx;
+                if(divIdx > mulIdx) return divIdx;
+                return mulIdx;
+            }
+
+            while(nextPlusMin(this.expression)){
+                let idx = nextPlusMin(this.expression);
+                let result;
+                let v1 = this.expression[idx-1];
+                let v2 = this.expression[idx+1];
+                if(this.expression[idx] === "+") result = v1 + v2;
+                if(this.expression[idx] === "-") result = v1 - v2;
+                this.expression[idx-1] = result;
+                this.expression.splice(idx,2);
+                // console.log("Expr post op:", this.expression);
+            }
+
+
+
 
             this.accumulator = Number(this.expression[0]);
         }

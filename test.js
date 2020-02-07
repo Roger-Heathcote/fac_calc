@@ -80,26 +80,22 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
 {
     const C = NewCalc();
     addChars(C, "123+");
-    C.evaluate();
     test("Internal representation of '123+' is [123, '+']", C.expression, [123,'+']);
 }
 {
     const C = NewCalc();
-    addChars(C, "123+456");
-    C.evaluate();
-    test("Internal representation of '123+456' is [123, '+', 456]", C.expression, [123,'+',456]);
+    addChars(C, "123+456+");
+    test("Internal representation of '123+456+0' is [123, '+', 456, '+']", C.expression, [123,'+',456, '+']);
 }
 {
     const C = NewCalc();
-    addChars(C, "12.3+456");
-    C.evaluate();
-    test("Internal representation of '12.3+456' is [12.3, '+', 456]", C.expression, [12.3,'+',456]);
+    addChars(C, "12.3+456+1");
+    test("Internal representation of '12.3+456+1' is [12.3, '+', 456, '+', '1']", C.expression, [12.3,'+',456, '+', '1']);
 }
 {
     const C = NewCalc();
-    addChars(C, "123+-456");
-    C.evaluate();
-    test("Internal representation of '123+-456' is [123, '+', -456]", C.expression, [123, '+', -456]);    
+    addChars(C, "123+-456-");
+    test("Internal representation of '123+-456-' is [123, '+', -456, '-']", C.expression, [123, '+', -456, '-']);    
 }
 
 // Story #1 - Hard to test without dependencies
@@ -118,17 +114,27 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
 {
     const C = NewCalc();
     addChars(C, "3*2");
-    test("Check value of expression '3*2' is '6'", C.equals, "6");
+    test("Check expression '3*2' evaluates to '6'", C.equals, "6");
 }
 {
     const C = NewCalc();
     addChars(C, "2*3*3");
-    test("Check value of expression '2*3*3' is '18'", C.equals, "18");
+    test("Check expression '2*3*3' evaluates to '18'", C.equals, "18");
 }
 {
     const C = NewCalc();
     addChars(C, "2*9/3");
-    test("Check value of expression '2*9/3' is '6'", C.equals, "6");
+    test("Check expression '2*9/3' evaluates to '6'", C.equals, "6");
+}
+{
+    const C = NewCalc();
+    addChars(C, "1+1");
+    test("Check expression '1+1' evaluates to '2'", C.equals, "2");
+}
+{
+    const C = NewCalc();
+    addChars(C, "0.0.2*50*050+25+50-24-100/000100");
+    test("Check expression '0.0.2*50*050+25+50-24-100/000100' evaluates to '100'", C.equals, "100");
 }
 // Story #10 - Leading zeros
 // Story #10 - Leading zeros
@@ -137,8 +143,7 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
 { // get rid of leading zeros
     const C = NewCalc();
     addChars(C, "02+02");
-    C.evaluate();
-    test("Internal representation of '02+02' is [2, '+', 2]", C.expression, [2, '+', 2]);
+    test("Internal representation of '02+02' is '2+2'", C.display, '2+2');
 }
 { // get rid of leading zeros 1
     const C = NewCalc();
@@ -164,16 +169,8 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
 { // get rid of leading zeros 4
     const C = NewCalc();
     addChars(C, ".1+2.000+0.345");
-    C.evaluate();
     // console.log("POST EVAL:",C.expression);
     test("Display of '.1+2.000+0.345' is '0.1+2.0+0.345'", C.display, "0.1+2+0.345");
-}
-{ // get rid of leading zeros 5
-    const C = NewCalc();
-    addChars(C, ".1+2.000+0.345");
-    C.evaluate();
-    // console.log("POST EVAL:",C.expression);
-    test("Internal representation of '.1+2.000+0.345' is '0.1+2.0+0.345'", C.expression, [0.1, "+", 2, "+", 0.345]);
 }
 
 // Story #11 - Decimal points
@@ -183,22 +180,24 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
 { // make sure multiple decimal points are ignored
     const C = NewCalc();
     addChars(C, "1.2.3+4.5.6");
-    C.evaluate();
-    test("Internal representation of '1.2.3+4.5.6' is [1.23, '+', 4.56]", C.expression, [1.23, '+', 4.56]);
+    test("Internal representation of '1.2.3+4.5.6' is [1.23, '+', 4.56]", C.display, '1.23+4.56');
 }
 
 { // make sure leading points are okay
     const C = NewCalc();
-    addChars(C, ".2+.6");
-    C.evaluate();
-    test("Internal representation of '.2+.6' is [0.2, '+', 0.6]", C.expression, [0.2, '+', 0.6]);
+    addChars(C, ".2+.6+");
+    test("Internal representation of '.2+.6' is [0.2, '+', 0.6]", C.display, '0.2+0.6+');
 }
 
 // Story #12 - Arithmetic on decimal fractions
 // Story #12 - Arithmetic on decimal fractions
 // Story #12 - Arithmetic on decimal fractions
 //
-// Check it works
+{
+    const C = NewCalc();
+    addChars(C, "2.5-0.5+1.5/0.5+100.0*0.15");
+    test("Check expression '2.5-0.5+1.5/0.5+100.0*0.15' evaluates to '20'", C.equals, "20");
+}
 
 // Story #13 - No duplicate operators except minus
 // Story #13 - No duplicate operators except minus
