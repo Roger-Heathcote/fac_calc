@@ -78,7 +78,7 @@ function NewCalc(){
         }
         get equals() {
             if(this.expression.length) this.evaluate();
-            return this.accumulator;
+            return this.accumulator.toString();
         }
         get display() {
             return this.expression.join("");

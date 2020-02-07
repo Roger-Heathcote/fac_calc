@@ -58,12 +58,12 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
 // BASIC
 {
     const C = NewCalc()
-    test("Check Default val of fresh instance is zero", C.equals, 0);
+    test("Check Default val of fresh instance is zero", C.equals, "0");
 }
 {
     const C = NewCalc();
     C.add_char("3");
-    test("Check value of expression '3' is 3", C.equals, 3);
+    test("Check value of expression '3' is 3", C.equals, "3");
 }
 
 // PARSING
@@ -115,7 +115,11 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
 // Story #9 - Arithmetic
 // Story #9 - Arithmetic
 //
-// TODO!
+{
+    const C = NewCalc();
+    C.add_char("3+1");
+    test("Check value of expression '3+1' is '4'", C.equals, "4");
+}
 
 // Story #10 - Leading zeros
 // Story #10 - Leading zeros
