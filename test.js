@@ -117,10 +117,19 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
 //
 {
     const C = NewCalc();
-    C.add_char("3+1");
-    test("Check value of expression '3+1' is '4'", C.equals, "4");
+    addChars(C, "3*2");
+    test("Check value of expression '3*2' is '6'", C.equals, "6");
 }
-
+{
+    const C = NewCalc();
+    addChars(C, "2*3*3");
+    test("Check value of expression '2*3*3' is '18'", C.equals, "18");
+}
+{
+    const C = NewCalc();
+    addChars(C, "2*9/3");
+    test("Check value of expression '2*9/3' is '6'", C.equals, "6");
+}
 // Story #10 - Leading zeros
 // Story #10 - Leading zeros
 // Story #10 - Leading zeros

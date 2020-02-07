@@ -73,8 +73,37 @@ function NewCalc(){
         evaluate() {
             if(this.isNum){
                 consolidateNum(this.expression);
-                this.accumulator = Number(this.expression[0]);
             }
+            // Order of precedent
+            // Left to right
+            // Multiplication & Division
+            // Addition & subtraction
+
+            function nextMulDiv(expr){
+                // console.log("Checking for ops in:", expr);
+                let nextOp;
+                let mulIdx = expr.indexOf("*");
+                let divIdx = expr.indexOf("/");
+                if((mulIdx === -1) && (divIdx === -1)) return false;
+                if(mulIdx === -1) return divIdx;
+                if(divIdx === -1) return mulIdx;
+                if(divIdx > mulIdx) return divIdx;
+                return mulIdx;
+            }
+
+            while(nextMulDiv(this.expression)){
+                let idx = nextMulDiv(this.expression);
+                let result;
+                let v1 = this.expression[idx-1];
+                let v2 = this.expression[idx+1];
+                if(this.expression[idx] === "*") result = v1 * v2;
+                if(this.expression[idx] === "/") result = v1 / v2;
+                this.expression[idx-1] = result;
+                this.expression.splice(idx,2);
+                // console.log("Expr post op:", this.expression);
+            }
+
+            this.accumulator = Number(this.expression[0]);
         }
         get equals() {
             if(this.expression.length) this.evaluate();
