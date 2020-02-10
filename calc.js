@@ -60,12 +60,13 @@ function NewCalc(){
             this.pointYet = false; // Flag is true if decimal point used in this number
         }
         add_char(character) {
+            if(!isDigit(character) && !isOp(character)) return;
             if(isDigit(character)){
                 this.isNum = true;
                 // If there's a result left over from the last calculation clear it
                 if(this._expr.length === 1 && typeof(this._expr[0]) == typeof(1)) this._expr.pop();
                 // Don't allow more than one decimal point
-                if(character === '.' && this.pointYet) return false;
+                if(character === '.' && this.pointYet) return;
                 if(character === '.') this.pointYet = true;
                 // If we are at the start of a number...
                 if(!this._expr.penultimate() || !isDigit(this._expr.penultimate())){

@@ -279,3 +279,11 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
     // Answer should be rounded to 10 places
     test("Check expression '355/113' evaluates to '3.1415929204'", C.equals, "3.1415929204");
 }
+
+// Ignore chars that aren't either an operator or a digit or a decimal point.
+{
+    const C = NewCalc();
+    addChars(C, "a3%^5(5=/$1sdfsdfs1;[3.<>0");
+    // Answer should be ignore all but the digits, operators adn decimal point
+    test("Check expression 'a3%^5(5=/$1sdfsdfs1;[3.<>0' evaluates to '3.1415929204'", C.equals, "3.1415929204");
+}
