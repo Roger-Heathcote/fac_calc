@@ -74,6 +74,9 @@ function NewCalc(){
             if(this.isNum){
                 consolidateNum(this.expression);
             }
+
+            // TODO - pop off stray operators at the end
+
             // Order of precedent
             // Left to right
             // Multiplication & Division
@@ -86,8 +89,8 @@ function NewCalc(){
                 if((mulIdx === -1) && (divIdx === -1)) return false;
                 if(mulIdx === -1) return divIdx;
                 if(divIdx === -1) return mulIdx;
-                if(divIdx > mulIdx) return divIdx;
-                return mulIdx;
+                if(divIdx > mulIdx) return mulIdx;
+                return divIdx;
             }
 
             while(nextMulDiv(this.expression)){
@@ -99,9 +102,9 @@ function NewCalc(){
                 if(this.expression[idx] === "/") result = v1 / v2;
                 this.expression[idx-1] = result;
                 this.expression.splice(idx,2);
-                // console.log("Expr post op:", this.expression);
+                // console.log("Muldiv expr post op:", this.expression.join(""));
             }
-
+            
             function nextPlusMin(expr){
                 // console.log("Checking for ops in:", expr);
                 let mulIdx = expr.indexOf("+");
@@ -109,10 +112,10 @@ function NewCalc(){
                 if((mulIdx === -1) && (divIdx === -1)) return false;
                 if(mulIdx === -1) return divIdx;
                 if(divIdx === -1) return mulIdx;
-                if(divIdx > mulIdx) return divIdx;
-                return mulIdx;
+                if(divIdx > mulIdx) return mulIdx;
+                return divIdx;
             }
-
+            
             while(nextPlusMin(this.expression)){
                 let idx = nextPlusMin(this.expression);
                 let result;
@@ -122,11 +125,8 @@ function NewCalc(){
                 if(this.expression[idx] === "-") result = v1 - v2;
                 this.expression[idx-1] = result;
                 this.expression.splice(idx,2);
-                // console.log("Expr post op:", this.expression);
+                // console.log("Addsub expr post op:", this.expression.join(""));
             }
-
-
-
 
             this.accumulator = Number(this.expression[0]);
         }
