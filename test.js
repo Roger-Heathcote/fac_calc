@@ -66,38 +66,6 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
     test("Check value of expression '3' is 3", C.equals, "3");
 }
 
-// PARSING
-// PARSING
-// PARSING
-
-// Test parsing by looking at internal representations - needed during development, remove later
-{
-    const C = NewCalc();
-    addChars(C, "123");
-    C.evaluate();
-    test("Internal representation of '123' is [123]", C.expr, [123]);
-}
-{
-    const C = NewCalc();
-    addChars(C, "123+");
-    test("Internal representation of '123+' is [123, '+']", C.expr, [123,'+']);
-}
-{
-    const C = NewCalc();
-    addChars(C, "123+456+");
-    test("Internal representation of '123+456+0' is [123, '+', 456, '+']", C.expr, [123,'+',456, '+']);
-}
-{
-    const C = NewCalc();
-    addChars(C, "12.3+456+1");
-    test("Internal representation of '12.3+456+1' is [12.3, '+', 456, '+', '1']", C.expr, [12.3,'+',456, '+', '1']);
-}
-{
-    const C = NewCalc();
-    addChars(C, "123+-456-");
-    test("Internal representation of '123+-456-' is [123, '+', -456, '-']", C.expr, [123, '+', -456, '-']);    
-}
-
 // Story #1 - Hard to test without dependencies
 // Story #2 - Hard to test without dependencies
 // Story #3 - Hard to test without dependencies

@@ -31,7 +31,7 @@ function NewCalc(){
             this.clear();
         }
         clear() {
-            this.expr = addEndMethods(["0"]); // This holds our expression's elements
+            this._expr = addEndMethods(["0"]); // This holds our expression's elements
             this.clearNumFlags();
         }
         clearNumFlags() {
@@ -42,40 +42,40 @@ function NewCalc(){
             if(isDigit(character)){
                 this.isNum = true;
                 // If there's a result left over from the last calculation clear it
-                if(this.expr.length === 1 && typeof(this.expr[0]) == typeof(1)) this.expr.pop();
+                if(this._expr.length === 1 && typeof(this._expr[0]) == typeof(1)) this._expr.pop();
                 // Don't allow more than one decimal point
                 if(character === '.' && this.pointYet) return false;
                 if(character === '.') this.pointYet = true;
                 // If we are at the start of a number...
-                if(!this.expr.penultimate() || !isDigit(this.expr.penultimate())){
+                if(!this._expr.penultimate() || !isDigit(this._expr.penultimate())){
                     // remove preceding zero unless we are starting a decimal fraction
-                    if(this.expr.last() === "0" && character !== ".") this.expr.pop();
+                    if(this._expr.last() === "0" && character !== ".") this._expr.pop();
                 }
             } else {
                 // An operator has been entered...
                 if(this.isNum){
                     // If we had been dealing with digits up to this point consolidate those
                     // digits into a number and reset number related flags
-                    consolidateNum(this.expr);
+                    consolidateNum(this._expr);
                     this.clearNumFlags();
                 }
                 // Get rid of any previous operators
                 if(character === "-"){
                     // A minus should only delete the prev operator if it is another
                     // minus, as otherwise it is the start of a negative number
-                    if(this.expr.last() === "-") this.expr.pop()
+                    if(this._expr.last() === "-") this._expr.pop()
                 } else {
-                    if(isOp(this.expr.last())){
-                        this.expr.pop() // delete prev operator
-                        if(isOp(this.expr.last())) this.expr.pop() // both if there's two
+                    if(isOp(this._expr.last())){
+                        this._expr.pop() // delete prev operator
+                        if(isOp(this._expr.last())) this._expr.pop() // both if there's two
                     } 
                 }                
             }
-            this.expr.push(character);
+            this._expr.push(character);
         }
         evaluate() {
             // If we have been parsing a number finish doing that
-            if(this.isNum){ consolidateNum(this.expr); }
+            if(this.isNum){ consolidateNum(this._expr); }
             // Apply operations until expression has no more operators
             let ops={
                 "*": (a,b)=>a*b, "/": (a,b)=>a/b, "+": (a,b)=>a+b, "-": (a,b)=>a-b,
@@ -96,13 +96,13 @@ function NewCalc(){
                 expr.splice(idx,2);
             }
             // Evaluate Left to Right
-            while(nextOPS(this.expr,"*","/")){ // mul & div 1st
-                runOP(this.expr, nextOPS(this.expr,"*","/"));             
+            while(nextOPS(this._expr,"*","/")){ // mul & div 1st
+                runOP(this._expr, nextOPS(this._expr,"*","/"));             
             }
-            while(nextOPS(this.expr,"+","-")){ // add & sub 2nd
-                runOP(this.expr, nextOPS(this.expr,"+","-"));             
+            while(nextOPS(this._expr,"+","-")){ // add & sub 2nd
+                runOP(this._expr, nextOPS(this._expr,"+","-"));             
             }
-            this.accumulator = Number(Number(this.expr[0]).toFixed(10));
+            this.accumulator = Number(Number(this._expr[0]).toFixed(10));
             this.clearNumFlags();
         }
         get equals() {
@@ -110,7 +110,7 @@ function NewCalc(){
             return this.accumulator.toString();
         }
         get display() {
-            return this.expr.join("") || "0";
+            return this._expr.join("") || "0";
         }
     }
     return new Calculator();
