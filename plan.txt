@@ -9,7 +9,7 @@ Actions
             add_char
             clear
             display
->   Create an index.html
+>   Create an index.html & index.css file
     Import calc code
     Add interface code
 
