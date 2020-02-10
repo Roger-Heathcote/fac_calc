@@ -26,6 +26,27 @@ function NewCalc(){
         expr.push(Number(digits.join('')));
     }
 
+    // Maps operator characters to functions that carry those operations out
+    let ops={"*": (a,b)=>a*b, "/": (a,b)=>a/b, "+": (a,b)=>a+b, "-": (a,b)=>a-b};
+
+    // Return index of next of either of two specified operators
+    function nextOPS(expr, op1, op2){
+        let op1Idx = expr.indexOf(op1);
+        let op2Idx = expr.indexOf(op2);
+        if((op1Idx === -1) && (op2Idx === -1)) return false;
+        if(op1Idx === -1) return op2Idx;
+        if(op2Idx === -1) return op1Idx;
+        if(op2Idx > op1Idx) return op1Idx;
+        return op2Idx;
+    }
+
+    // Does what it says on the tin and mutates the array passed to it in the process!
+    function runOP(expr, idx){
+        let [arg1, op, arg2] = expr.slice(idx-1,idx+2);
+        expr[idx-1] = ops[op](arg1,arg2);
+        expr.splice(idx,2);
+    }
+
     class Calculator {
         constructor() {
             this.clear();
@@ -77,24 +98,6 @@ function NewCalc(){
             // If we have been parsing a number finish doing that
             if(this.isNum){ consolidateNum(this._expr); }
             // Apply operations until expression has no more operators
-            let ops={
-                "*": (a,b)=>a*b, "/": (a,b)=>a/b, "+": (a,b)=>a+b, "-": (a,b)=>a-b,
-            };
-            //Return index of next of either specified operator
-            function nextOPS(expr, op1, op2){
-                let op1Idx = expr.indexOf(op1);
-                let op2Idx = expr.indexOf(op2);
-                if((op1Idx === -1) && (op2Idx === -1)) return false;
-                if(op1Idx === -1) return op2Idx;
-                if(op2Idx === -1) return op1Idx;
-                if(op2Idx > op1Idx) return op1Idx;
-                return op2Idx;
-            }
-            function runOP(expr, idx){
-                let [arg1, op, arg2] = expr.slice(idx-1,idx+2);
-                expr[idx-1] = ops[op](arg1,arg2);
-                expr.splice(idx,2);
-            }
             // Evaluate Left to Right
             while(nextOPS(this._expr,"*","/")){ // mul & div 1st
                 runOP(this._expr, nextOPS(this._expr,"*","/"));             
