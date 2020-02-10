@@ -32,20 +32,24 @@ function NewCalc(){
             this.expression = addEndMethods([]);
             this.accumulator = 0;
         }
-        set clear(_) {
+        clear() {
             this.expression = []; // TODO addEndMethods
             this.accumulator = 0;
+            this.isNum = false; // Flag is true whenever we are parsing a number
+            this.pointYet = false; // Flag is true if we are parsing a number and have already had our one decimal point
         }
         get acc() {
             return this.accumulator;
         }
         add_char(character) {
             if(isDigit(character)){
+                // If there's a result left over from the last calculation clear it
+                if(this.expression.length === 1 && typeof(this.expression[0]) == typeof(1)) this.expression.pop();
                 this.isNum = true;
                 if(character === '.' && this.pointYet) return false; // don't add more than one point
                 if(character === '.') this.pointYet = true; // flag we have our one decimal point
                 if(!this.expression.penultimate() || !isDigit(this.expression.penultimate())){ // if at start of num
-                     // remove preceding zero unless we are starting a decimal fraction
+                    // remove preceding zero unless we are starting a decimal fraction
                     if(this.expression.last() === "0" && character !== ".") this.expression.pop();
                 }
             } else { // An operator has been entered...
@@ -71,19 +75,12 @@ function NewCalc(){
             this.expression.push(character);
         }
         evaluate() {
-            if(this.isNum){
-                consolidateNum(this.expression);
-            }
+            // If we are parsing a number finish doing that
+            if(this.isNum){ consolidateNum(this.expression); }
 
-            // TODO - pop off stray operators at the end
-
-            // Order of precedent
-            // Left to right
-            // Multiplication & Division
-            // Addition & subtraction
+            // Order of precedence: Left to right, Multiplication & Division, Addition & subtraction
 
             function nextMulDiv(expr){
-                // console.log("Checking for ops in:", expr);
                 let mulIdx = expr.indexOf("*");
                 let divIdx = expr.indexOf("/");
                 if((mulIdx === -1) && (divIdx === -1)) return false;
@@ -102,11 +99,9 @@ function NewCalc(){
                 if(this.expression[idx] === "/") result = v1 / v2;
                 this.expression[idx-1] = result;
                 this.expression.splice(idx,2);
-                // console.log("Muldiv expr post op:", this.expression.join(""));
             }
             
             function nextPlusMin(expr){
-                // console.log("Checking for ops in:", expr);
                 let mulIdx = expr.indexOf("+");
                 let divIdx = expr.indexOf("-");
                 if((mulIdx === -1) && (divIdx === -1)) return false;
@@ -125,18 +120,18 @@ function NewCalc(){
                 if(this.expression[idx] === "-") result = v1 - v2;
                 this.expression[idx-1] = result;
                 this.expression.splice(idx,2);
-                // console.log("Addsub expr post op:", this.expression.join(""));
             }
-
+            
             this.accumulator = Number(Number(this.expression[0]).toFixed(10));
-            // limit to 10 digits of precision
+            this.isNum = false;
+            this.pointYet = false;
         }
         get equals() {
             if(this.expression.length) this.evaluate();
             return this.accumulator.toString();
         }
         get display() {
-            return this.expression.join("");
+            return this.expression.join("") || "0";
         }
     }
     return new Calculator();

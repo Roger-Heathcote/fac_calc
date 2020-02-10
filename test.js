@@ -104,7 +104,23 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
 // Story #4 - Hard to test without dependencies
 // Story #5 - Hard to test without dependencies
 // Story #6 - Hard to test without dependencies
-// Story #7 - Partly testable if clear is part of API
+
+// Story #7 - Clear Function
+// Story #7 - Clear Function
+// Story #7 - Clear Function
+{
+    const C = NewCalc();
+    C.clear();
+    test("Check display is '0' after clearing", C.display, "0");
+}
+{
+    const C = NewCalc();
+    addChars(C, "123456789");
+    test("Check display of expression '123456789' is '123456789'", C.equals, "123456789");
+    C.clear();
+    test("Check display is '0' after clearing", C.display, "0");
+}
+
 // Story #8 - Hard to test without dependencies
 
 // Story #9 - Arithmetic
@@ -243,6 +259,39 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
 // Story #14 - Operator after equals
 //
 // Starts new expression with result of last
+
+{
+    const C = NewCalc();
+    addChars(C, "10*10");
+    C.equals;
+    // Should use previous result
+    addChars(C, "*10")
+    test("Check 10*10 = * 10 equals '1000'", C.equals, "1000");
+}
+{
+    const C = NewCalc();
+    addChars(C, "10*10");
+    C.equals;
+    // Should disgard previous result
+    addChars(C, "10")
+    test("Check 10*10 = 10 equals '10'", C.equals, "10");
+}
+{
+    const C = NewCalc();
+    addChars(C, "2*2.5*4+400/5");
+    C.equals;
+    // Should disgard previous result
+    addChars(C, "+.1")
+    test("Check 2*2.5*4+400/5 = 100.1 equals '100.1'", C.equals, "100.1");
+}
+{
+    const C = NewCalc();
+    addChars(C, "1*2.5*4+400/5");
+    C.equals;
+    // Should disgard previous result
+    addChars(C, ".1")
+    test("Check 1*2.5*4+400/5 = 0.1 equals '0.1'", C.equals, "0.1");
+}
 
 // Story #15 - Arithmetic precision >= 4 places
 // Story #15 - Arithmetic precision >= 4 places
