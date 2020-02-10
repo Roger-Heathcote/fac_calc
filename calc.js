@@ -27,36 +27,30 @@ function NewCalc(){
 
     class Calculator {
         constructor() {
-            this.isNum = false; // Flag is true whenever we are parsing a number
-            this.pointYet = false; // Flag is true if we are parsing a number and have already had our one decimal point
-            this.expression = addEndMethods([]);
-            this.accumulator = 0;
+            this.clear();
         }
         clear() {
-            this.expression = []; // TODO addEndMethods
-            this.accumulator = 0;
             this.isNum = false; // Flag is true whenever we are parsing a number
             this.pointYet = false; // Flag is true if we are parsing a number and have already had our one decimal point
-        }
-        get acc() {
-            return this.accumulator;
+            this.expr = addEndMethods(["0"]);
+            // this.accumulator = 0;
         }
         add_char(character) {
             if(isDigit(character)){
                 // If there's a result left over from the last calculation clear it
-                if(this.expression.length === 1 && typeof(this.expression[0]) == typeof(1)) this.expression.pop();
+                if(this.expr.length === 1 && typeof(this.expr[0]) == typeof(1)) this.expr.pop();
                 this.isNum = true;
                 if(character === '.' && this.pointYet) return false; // don't add more than one point
                 if(character === '.') this.pointYet = true; // flag we have our one decimal point
-                if(!this.expression.penultimate() || !isDigit(this.expression.penultimate())){ // if at start of num
+                if(!this.expr.penultimate() || !isDigit(this.expr.penultimate())){ // if at start of num
                     // remove preceding zero unless we are starting a decimal fraction
-                    if(this.expression.last() === "0" && character !== ".") this.expression.pop();
+                    if(this.expr.last() === "0" && character !== ".") this.expr.pop();
                 }
             } else { // An operator has been entered...
                 if(this.isNum){
                     // If we had been dealing with digits up to this point consolidate those digits into
                     // a number and reset number related flags
-                    consolidateNum(this.expression);
+                    consolidateNum(this.expr);
                     this.isNum = false;
                     this.pointYet = false;
                 }
@@ -64,74 +58,56 @@ function NewCalc(){
                 if(character === "-"){
                     // A minus should only delete the prev operator if it is another
                     // minus, as it may be the start of a negative number
-                    if(this.expression.last() === "-") this.expression.pop()
+                    if(this.expr.last() === "-") this.expr.pop()
                 } else {
-                    if(isOp(this.expression.last())){
-                        this.expression.pop() // delete prev operator
-                        if(isOp(this.expression.last())) this.expression.pop() // both if there's two
+                    if(isOp(this.expr.last())){
+                        this.expr.pop() // delete prev operator
+                        if(isOp(this.expr.last())) this.expr.pop() // both if there's two
                     } 
                 }                
             }
-            this.expression.push(character);
+            this.expr.push(character);
         }
         evaluate() {
             // If we are parsing a number finish doing that
-            if(this.isNum){ consolidateNum(this.expression); }
+            if(this.isNum){ consolidateNum(this.expr); }
 
-            // Order of precedence: Left to right, Multiplication & Division, Addition & subtraction
-
-            function nextMulDiv(expr){
-                let mulIdx = expr.indexOf("*");
-                let divIdx = expr.indexOf("/");
-                if((mulIdx === -1) && (divIdx === -1)) return false;
-                if(mulIdx === -1) return divIdx;
-                if(divIdx === -1) return mulIdx;
-                if(divIdx > mulIdx) return mulIdx;
-                return divIdx;
+            // Order of precedence: Left to right, * & /, + & -
+            let ops={
+                "*": (a,b)=>a*b, "/": (a,b)=>a/b, "+": (a,b)=>a+b, "-": (a,b)=>a-b,
+            };
+            function nextOPS(expr, op1, op2){
+                let op1Idx = expr.indexOf(op1);
+                let op2Idx = expr.indexOf(op2);
+                if((op1Idx === -1) && (op2Idx === -1)) return false;
+                if(op1Idx === -1) return op2Idx;
+                if(op2Idx === -1) return op1Idx;
+                if(op2Idx > op1Idx) return op1Idx;
+                return op2Idx;
             }
-
-            while(nextMulDiv(this.expression)){
-                let idx = nextMulDiv(this.expression);
-                let result;
-                let v1 = this.expression[idx-1];
-                let v2 = this.expression[idx+1];
-                if(this.expression[idx] === "*") result = v1 * v2;
-                if(this.expression[idx] === "/") result = v1 / v2;
-                this.expression[idx-1] = result;
-                this.expression.splice(idx,2);
+            function runOP(expr, idx){
+                let [arg1, op, arg2] = expr.slice(idx-1,idx+2);
+                expr[idx-1] = ops[op](arg1,arg2);
+                expr.splice(idx,2);
             }
-            
-            function nextPlusMin(expr){
-                let mulIdx = expr.indexOf("+");
-                let divIdx = expr.indexOf("-");
-                if((mulIdx === -1) && (divIdx === -1)) return false;
-                if(mulIdx === -1) return divIdx;
-                if(divIdx === -1) return mulIdx;
-                if(divIdx > mulIdx) return mulIdx;
-                return divIdx;
+            // Evaluate Left to Right
+            while(nextOPS(this.expr,"*","/")){ // mul & div 1st
+                runOP(this.expr, nextOPS(this.expr,"*","/"));             
             }
-            
-            while(nextPlusMin(this.expression)){
-                let idx = nextPlusMin(this.expression);
-                let result;
-                let v1 = this.expression[idx-1];
-                let v2 = this.expression[idx+1];
-                if(this.expression[idx] === "+") result = v1 + v2;
-                if(this.expression[idx] === "-") result = v1 - v2;
-                this.expression[idx-1] = result;
-                this.expression.splice(idx,2);
+            while(nextOPS(this.expr,"+","-")){ // add & sub 2nd
+                runOP(this.expr, nextOPS(this.expr,"+","-"));             
             }
-            
-            this.accumulator = Number(Number(this.expression[0]).toFixed(10));
+                        
+            this.accumulator = Number(Number(this.expr[0]).toFixed(10));
             this.isNum = false;
             this.pointYet = false;
         }
         get equals() {
-            if(this.expression.length) this.evaluate();
+            this.evaluate();
             return this.accumulator.toString();
         }
         get display() {
-            return this.expression.join("") || "0";
+            return this.expr.join("") || "0";
         }
     }
     return new Calculator();

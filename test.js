@@ -75,27 +75,27 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
     const C = NewCalc();
     addChars(C, "123");
     C.evaluate();
-    test("Internal representation of '123' is [123]", C.expression, [123]);
+    test("Internal representation of '123' is [123]", C.expr, [123]);
 }
 {
     const C = NewCalc();
     addChars(C, "123+");
-    test("Internal representation of '123+' is [123, '+']", C.expression, [123,'+']);
+    test("Internal representation of '123+' is [123, '+']", C.expr, [123,'+']);
 }
 {
     const C = NewCalc();
     addChars(C, "123+456+");
-    test("Internal representation of '123+456+0' is [123, '+', 456, '+']", C.expression, [123,'+',456, '+']);
+    test("Internal representation of '123+456+0' is [123, '+', 456, '+']", C.expr, [123,'+',456, '+']);
 }
 {
     const C = NewCalc();
     addChars(C, "12.3+456+1");
-    test("Internal representation of '12.3+456+1' is [12.3, '+', 456, '+', '1']", C.expression, [12.3,'+',456, '+', '1']);
+    test("Internal representation of '12.3+456+1' is [12.3, '+', 456, '+', '1']", C.expr, [12.3,'+',456, '+', '1']);
 }
 {
     const C = NewCalc();
     addChars(C, "123+-456-");
-    test("Internal representation of '123+-456-' is [123, '+', -456, '-']", C.expression, [123, '+', -456, '-']);    
+    test("Internal representation of '123+-456-' is [123, '+', -456, '-']", C.expr, [123, '+', -456, '-']);    
 }
 
 // Story #1 - Hard to test without dependencies
