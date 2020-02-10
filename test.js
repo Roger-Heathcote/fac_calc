@@ -198,6 +198,11 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
     addChars(C, "2.5-0.5+1.5/0.5+100.0*0.15");
     test("Check expression '2.5-0.5+1.5/0.5+100.0*0.15' evaluates to '20'", C.equals, "20");
 }
+{
+    const C = NewCalc();
+    addChars(C, "0.0.004+.0006*6+25/5/4*.3+8-0.5*1.0.02-0.3+4*2.134/0.5/2.6/0.8*0.9+0.0350769231");
+    test("Check expression '0.0.004+.0006*6+25/5/4*.3+8-0.5*1.0.02-0.3+4*2.134/0.5/2.6/0.8*0.9+0.0350769230' evaluates to '15'", C.equals, "15");
+}
 
 // Story #13 - No duplicate operators except minus
 // Story #13 - No duplicate operators except minus
@@ -242,3 +247,18 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
 // Story #15 - Arithmetic precision >= 4 places
 // Story #15 - Arithmetic precision >= 4 places
 // Story #15 - Arithmetic precision >= 4 places
+
+// We will use 10 decimal places of precision
+
+{
+    const C = NewCalc();
+    addChars(C, "1/3");
+    // Answer should be rounded to 10 places
+    test("Check expression '1/3' evaluates to '0.3333333333'", C.equals, "0.3333333333");
+}
+{
+    const C = NewCalc();
+    addChars(C, "355/113");
+    // Answer should be rounded to 10 places
+    test("Check expression '355/113' evaluates to '3.1415929204'", C.equals, "3.1415929204");
+}

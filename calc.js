@@ -63,7 +63,7 @@ function NewCalc(){
                     if(this.expression.last() === "-") this.expression.pop()
                 } else {
                     if(isOp(this.expression.last())){
-                        this.expression.pop() // delete prev operators
+                        this.expression.pop() // delete prev operator
                         if(isOp(this.expression.last())) this.expression.pop() // both if there's two
                     } 
                 }                
@@ -128,7 +128,8 @@ function NewCalc(){
                 // console.log("Addsub expr post op:", this.expression.join(""));
             }
 
-            this.accumulator = Number(this.expression[0]);
+            this.accumulator = Number(Number(this.expression[0]).toFixed(10));
+            // limit to 10 digits of precision
         }
         get equals() {
             if(this.expression.length) this.evaluate();
