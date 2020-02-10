@@ -3,22 +3,23 @@ function NewCalc(){
     const isOp = (character) => "+-*/".includes(character);
     const isDigit = (character) => "0123456789.".includes(character);
 
-    // Mix-in that adds the methods .last and .penultimate to an object with a length
+    // Mix-in that adds the methods .last and .penultimate to an object with a length;
+    // in our case the array that holds the elements of our expression.
     function addEndMethods(obj){
         obj.last = function(){ return this[this.length-1]; };
         obj.penultimate = function(){ return this[this.length-2]; };
         return obj;
     }
     
-    // pops number chars off expression and pushes the actual number back on
+    // Pops digit characters off expression and pushes the actual number back on
     function consolidateNum(expr){
         let digits = [];
         while(isDigit(expr.last())){ digits.unshift(expr.pop());}
         let oneBack = expr.length-1;
         let twoBack = oneBack - 1;
         // If we find a minus sign at the front of the number and it's either at the
-        // very start of the expression, or it's preceeded by another operator then
-        // grab it, our number is negative.
+        // very start of the expression, or it's preceded by another operator then
+        // absorb it into digits array, our number is negative.
         if(oneBack >= 0 && expr.last() == "-"){
             if(twoBack < 0 || isOp(expr[twoBack]) ) digits.unshift( expr.pop() );
         }
@@ -30,34 +31,38 @@ function NewCalc(){
             this.clear();
         }
         clear() {
-            this.isNum = false; // Flag is true whenever we are parsing a number
-            this.pointYet = false; // Flag is true if we are parsing a number and have already had our one decimal point
-            this.expr = addEndMethods(["0"]);
-            // this.accumulator = 0;
+            this.expr = addEndMethods(["0"]); // This holds our expression's elements
+            this.clearNumFlags();
+        }
+        clearNumFlags() {
+            this.isNum = false;    // Flag is true whenever we are parsing a number
+            this.pointYet = false; // Flag is true if decimal point used in this number
         }
         add_char(character) {
             if(isDigit(character)){
+                this.isNum = true;
                 // If there's a result left over from the last calculation clear it
                 if(this.expr.length === 1 && typeof(this.expr[0]) == typeof(1)) this.expr.pop();
-                this.isNum = true;
-                if(character === '.' && this.pointYet) return false; // don't add more than one point
-                if(character === '.') this.pointYet = true; // flag we have our one decimal point
-                if(!this.expr.penultimate() || !isDigit(this.expr.penultimate())){ // if at start of num
+                // Don't allow more than one decimal point
+                if(character === '.' && this.pointYet) return false;
+                if(character === '.') this.pointYet = true;
+                // If we are at the start of a number...
+                if(!this.expr.penultimate() || !isDigit(this.expr.penultimate())){
                     // remove preceding zero unless we are starting a decimal fraction
                     if(this.expr.last() === "0" && character !== ".") this.expr.pop();
                 }
-            } else { // An operator has been entered...
+            } else {
+                // An operator has been entered...
                 if(this.isNum){
-                    // If we had been dealing with digits up to this point consolidate those digits into
-                    // a number and reset number related flags
+                    // If we had been dealing with digits up to this point consolidate those
+                    // digits into a number and reset number related flags
                     consolidateNum(this.expr);
-                    this.isNum = false;
-                    this.pointYet = false;
+                    this.clearNumFlags();
                 }
                 // Get rid of any previous operators
                 if(character === "-"){
                     // A minus should only delete the prev operator if it is another
-                    // minus, as it may be the start of a negative number
+                    // minus, as otherwise it is the start of a negative number
                     if(this.expr.last() === "-") this.expr.pop()
                 } else {
                     if(isOp(this.expr.last())){
@@ -69,13 +74,13 @@ function NewCalc(){
             this.expr.push(character);
         }
         evaluate() {
-            // If we are parsing a number finish doing that
+            // If we have been parsing a number finish doing that
             if(this.isNum){ consolidateNum(this.expr); }
-
-            // Order of precedence: Left to right, * & /, + & -
+            // Apply operations until expression has no more operators
             let ops={
                 "*": (a,b)=>a*b, "/": (a,b)=>a/b, "+": (a,b)=>a+b, "-": (a,b)=>a-b,
             };
+            //Return index of next of either specified operator
             function nextOPS(expr, op1, op2){
                 let op1Idx = expr.indexOf(op1);
                 let op2Idx = expr.indexOf(op2);
@@ -97,10 +102,8 @@ function NewCalc(){
             while(nextOPS(this.expr,"+","-")){ // add & sub 2nd
                 runOP(this.expr, nextOPS(this.expr,"+","-"));             
             }
-                        
             this.accumulator = Number(Number(this.expr[0]).toFixed(10));
-            this.isNum = false;
-            this.pointYet = false;
+            this.clearNumFlags();
         }
         get equals() {
             this.evaluate();
