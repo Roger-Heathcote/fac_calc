@@ -12,10 +12,10 @@ TODO
     Create an index.html & index.css file
     Import calc code
     Add interface code
->   Refactor buttons
+    Refactor buttons
         Remove code from onClicks
         Replace with event delegation
-    Lay it out nicely
+>   Lay it out nicely
         With regard to
             Accessibility
                 Allow keyboard keys
@@ -60,3 +60,8 @@ DONE
 
     User Story #15: My calculator should have several decimal places of precision when it comes to rounding (note that there is no exact standard, but you should be able to handle calculations like 2 / 7 with reasonable precision to at least 4 decimal places).
 
+    Refactor buttons
+        Remove code from onClicks
+        Replace with event delegation
+
+    Added keyboard control
