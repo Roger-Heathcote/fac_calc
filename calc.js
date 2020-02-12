@@ -54,6 +54,7 @@ function NewCalc(){
         clear() {
             this._expr = addEndMethods(["0"]); // This holds our expression's elements
             this.clearNumFlags();
+            this.isNum = true; // Is true when cleared as expression has 0 at start.
         }
         clearNumFlags() {
             this.isNum = false;    // Flag is true whenever we are parsing a number
