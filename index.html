@@ -8,30 +8,40 @@
     </head>
     <body>
         <h1>Calculator!</h1>
-        <!-- Refactor as click delegator -->
+
         <div id="display"></div>
-        <button type="button" id="equals" onclick="CALC.equals; updateDisplay();">=</button>
-        <button type="button" id="zero" onclick="CALC.add_char('0'); updateDisplay();">0</button>
-        <button type="button" id="one" onclick="CALC.add_char('1'); updateDisplay();">1</button>
-        <button type="button" id="two" onclick="CALC.add_char('2'); updateDisplay();">2</button>
-        <button type="button" id="three" onclick="CALC.add_char('3'); updateDisplay();">3</button>
-        <button type="button" id="four" onclick="CALC.add_char('4'); updateDisplay();">4</button>
-        <button type="button" id="five" onclick="CALC.add_char('5'); updateDisplay();">5</button>
-        <button type="button" id="six" onclick="CALC.add_char('6'); updateDisplay();">6</button>
-        <button type="button" id="seven" onclick="CALC.add_char('7'); updateDisplay();">7</button>
-        <button type="button" id="eight" onclick="CALC.add_char('8'); updateDisplay();">8</button>
-        <button type="button" id="nine" onclick="CALC.add_char('9'); updateDisplay();">9</button>
-        <button type="button" id="decimal" onclick="CALC.add_char('.'); updateDisplay();">.</button>
-        <button type="button" id="clear" onclick="CALC.clear(); updateDisplay();">AC</button>
-        <button type="button" id="add" onclick="CALC.add_char('+'); updateDisplay();">+</button>
-        <button type="button" id="subtract" onclick="CALC.add_char('-'); updateDisplay();">-</button>
-        <button type="button" id="multiply" onclick="CALC.add_char('*'); updateDisplay();">*</button>
-        <button type="button" id="divide" onclick="CALC.add_char('/'); updateDisplay();">/</button>
+
+        <button type="button" id="equals">=</button>
+        <button type="button" id="clear">AC</button>
+        <button type="button" id="zero">0</button>
+        <button type="button" id="one">1</button>
+        <button type="button" id="two">2</button>
+        <button type="button" id="three">3</button>
+        <button type="button" id="four">4</button>
+        <button type="button" id="five">5</button>
+        <button type="button" id="six">6</button>
+        <button type="button" id="seven">7</button>
+        <button type="button" id="eight">8</button>
+        <button type="button" id="nine">9</button>
+        <button type="button" id="decimal">.</button>
+        <button type="button" id="add">+</button>
+        <button type="button" id="subtract">-</button>
+        <button type="button" id="multiply">*</button>
+        <button type="button" id="divide">/</button>
+        <button type="button" id="divide">/</button>
     </body>
     <script>
+        const allowedChars = /^[0123456789\+\-\*\/\.]$/;
         const display = document.getElementById("display");
-        const updateDisplay = ()=> display.innerHTML = CALC.display;
+        const addAndUpdate = (character) => {
+            if(allowedChars.test(character)) CALC.add_char(character);
+            if(character === "=" || character === "Enter") CALC.equals;
+            if (character === "Delete" || character === "AC") CALC.clear();
+            display.innerHTML = CALC.display;
+        } 
         let CALC = NewCalc();
-        updateDisplay();
+        document.body.onclick = (event) => addAndUpdate(event.target.innerHTML);
+        document.body.onkeydown = (event) => addAndUpdate(event.key);
+        display.innerHTML = CALC.display;
     </script>
 </html>
