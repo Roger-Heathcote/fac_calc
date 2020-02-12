@@ -268,11 +268,9 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
     test("Check 1*2.5*4+400/5 = 0.1 equals '0.1'", C.equals, "0.1");
 }
 
-// Story #15 - Arithmetic precision >= 4 places
-// Story #15 - Arithmetic precision >= 4 places
-// Story #15 - Arithmetic precision >= 4 places
-
-// We will use 10 decimal places of precision
+// Story #15 - Arithmetic precision 10 places
+// Story #15 - Arithmetic precision 10 places
+// Story #15 - Arithmetic precision 10 places
 
 {
     const C = NewCalc();
@@ -293,4 +291,20 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
     addChars(C, "a3%^5(5=/$1sdfsdfs1;[3.<>0");
     // Answer should be ignore all but the digits, operators adn decimal point
     test("Check expression 'a3%^5(5=/$1sdfsdfs1;[3.<>0' evaluates to '3.1415929204'", C.equals, "3.1415929204");
+}
+{
+    const C = NewCalc();
+    addChars(C, "1/3");
+    C.equals;
+    // Answer should be rounded to 10 places
+    test("Check expression '1/3' =  dsiplays '0.3333333333'", C.display, "0.3333333333");
+}
+{
+    const C = NewCalc();
+    addChars(C, "1.234*8.2");
+    C.equals;
+    // This is slightly counterintuitive as js evaluates 1.234*8.2 as 10.118799999999998
+    // What happens is our use of toFixed round this up to 10.1188000000 and then
+    // Number() trims off all the trialing zeros leaving us with the precise answer.
+    test("Check expression '1.234*8.2' evaluates to '10.1188'", C.equals, "10.1188");
 }

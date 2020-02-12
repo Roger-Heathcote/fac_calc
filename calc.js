@@ -108,6 +108,8 @@ function NewCalc(){
                 runOP(this._expr, nextOPS(this._expr,"+","-"));             
             }
             this.accumulator = Number(Number(this._expr[0]).toFixed(10));
+            this._expr.pop()
+            this._expr.push(this.accumulator);
             this.clearNumFlags();
         }
         get equals() {
