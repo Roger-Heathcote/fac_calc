@@ -120,6 +120,13 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
     addChars(C, "0.0.2*50*050+25+50-24-100/000100");
     test("Check expression '0.0.2*50*050+25+50-24-100/000100' evaluates to '100'", C.equals, "100");
 }
+{
+    const C = NewCalc();
+    addChars(C, "+700");
+    C.equals;
+    test("Check display of expression '+700' = '700'", C.display, "700");
+}
+
 // Story #10 - Leading zeros
 // Story #10 - Leading zeros
 // Story #10 - Leading zeros
