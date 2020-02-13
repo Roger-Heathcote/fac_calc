@@ -1,6 +1,8 @@
 html {
     box-sizing: border-box;
     font-size: 16px;
+    /* Width of calc must be set manually here */
+    --CALC-WIDTH: 90vw;
 }
 *, *:before, *:after {
     box-sizing: inherit;
@@ -17,9 +19,12 @@ img {
     max-width: 100%;
     height: auto;
 }
+button{
+    font-size: calc(var(--CALC-WIDTH)/10);
+}
 #calc{
-    --CALC-WIDTH: 50vw;
     width: var(--CALC-WIDTH);
+    margin: auto;
 }
 #display{
     background-color: black;
@@ -32,18 +37,48 @@ img {
     padding: 0em 1em 1em 0em;
 }
 #buttons {
-    height: var(--CALC-WIDTH);
     display: grid;
+    grid-auto-columns: 1fr;
     grid-auto-rows: 1fr;
-    grid-template-areas: "cl di mu su"
-    "se ei ni ad"
-    "fo fi si ad"
-    "on tw th eq"
-    "ze ze de eq";
 }
 #add { grid-area: ad; }
 #zero { grid-area: ze; }
 #equals { grid-area: eq; }
-button{
-    font-size: calc(var(--CALC-WIDTH)/10);
+#clear { grid-area: cl; }
+#divide { grid-area: di; }
+#multiply { grid-area: mu; }
+#subtract { grid-area: su; }
+#seven { grid-area: se; }
+#eight { grid-area: ei; }
+#nine { grid-area: ni; }
+#four { grid-area: fo; }
+#five { grid-area: fi; }
+#six { grid-area: si; }
+#one { grid-area: on; }
+#two { grid-area: tw; }
+#three { grid-area: th; }
+#decimal { grid-area: de; }
+
+
+@media all and (orientation:portrait) { 
+    body {background-color: red;}
+    #buttons {
+        grid-template-areas: "cl di mu su"
+        "se ei ni ad"
+        "fo fi si ad"
+        "on tw th eq"
+        "ze ze de eq";
+        height: calc(var(--CALC-WIDTH));
+    }
+}
+@media all and (orientation:landscape) {
+    body {background-color: green;}
+    #buttons {
+        grid-template-areas:
+        "se ei ni su cl"
+        "fo fi si mu di"
+        "on tw th ad eq"
+        "ze ze de ad eq";
+        height: calc(var(--CALC-WIDTH)/2);
+    }
 }

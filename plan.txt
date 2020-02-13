@@ -30,11 +30,9 @@ PLAN
 
 ACTIONS
 
-        Have it centered with a max width/height
-        Detect horiz/vert screen adn change layout accordingly
+        Have a max width/height
         Make it so very long numbers don't break the l/r padding
         Tab focus is barely visible, make it much more obvious
-
 
 DONE
 
@@ -73,3 +71,9 @@ DONE
         Replace with event delegation
 
     Added keyboard control
+
+    Have the calculator centered
+    Detect horiz/vert screen and change button layout accordingly
+
+
+
