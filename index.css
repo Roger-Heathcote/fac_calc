@@ -59,6 +59,11 @@ button{
 #three { grid-area: th; }
 #decimal { grid-area: de; }
 
+button:focus, button:hover {
+    background-color: red;
+    text-decoration: none;
+  }
+
 
 @media all and (orientation:portrait) { 
     body {background-color: red;}
