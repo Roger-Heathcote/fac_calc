@@ -1,4 +1,4 @@
-TODO
+PLAN
 
     Create a calc module that returns instances of a calc class
     Create a test file that tests the calc class
@@ -26,6 +26,14 @@ TODO
             Responsiveness
                 Check on large monitor
                 Check on phone sizes
+
+
+ACTIONS
+
+        Have it centered with a max width/height
+        Detect horiz/vert screen adn change layout accordingly
+        Make it so very long numbers don't break the l/r padding
+        Tab focus is barely visible, make it much more obvious
 
 
 DONE

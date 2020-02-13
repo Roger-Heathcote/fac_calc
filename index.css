@@ -17,3 +17,33 @@ img {
     max-width: 100%;
     height: auto;
 }
+#calc{
+    --CALC-WIDTH: 50vw;
+    width: var(--CALC-WIDTH);
+}
+#display{
+    background-color: black;
+    color: white;
+    font-family: monospace;
+    font-size: calc(var(--CALC-WIDTH)/10);
+    height: calc(var(--CALC-WIDTH) / 5);
+    line-height: calc(var(--CALC-WIDTH) / 5);
+    text-align: right;
+    padding: 0em 1em 1em 0em;
+}
+#buttons {
+    height: var(--CALC-WIDTH);
+    display: grid;
+    grid-auto-rows: 1fr;
+    grid-template-areas: "cl di mu su"
+    "se ei ni ad"
+    "fo fi si ad"
+    "on tw th eq"
+    "ze ze de eq";
+}
+#add { grid-area: ad; }
+#zero { grid-area: ze; }
+#equals { grid-area: eq; }
+button{
+    font-size: calc(var(--CALC-WIDTH)/10);
+}
