@@ -308,3 +308,17 @@ console.log(BLACKONYELLOW + "\nTESTS",CLEAR);
     // Number() trims off all the trialing zeros leaving us with the precise answer.
     test("Check expression '1.234*8.2' evaluates to '10.1188'", C.equals, "10.1188");
 }
+
+// Get rid of trailing operators
+{
+    const C = NewCalc();
+    addChars(C, "123+");
+    // Answer should be 123
+    test("Check expression '123+' evaluates to '123'", C.equals, "123");
+}
+{
+    const C = NewCalc();
+    addChars(C, "123*-");
+    // Answer should be 123
+    test("Check expression '123*-' evaluates to '123'", C.equals, "123");
+}

@@ -47,6 +47,14 @@ function NewCalc(){
         expr.splice(idx,2);
     }
 
+    // Gets rid of up to two trailing operators
+    function popOps(expr) {
+        if(isOp(expr.last())){
+            expr.pop() // delete prev operator
+            if(isOp(expr.last())) expr.pop() // both if there's two
+        } 
+    }
+
     class Calculator {
         constructor() {
             this.clear();
@@ -88,10 +96,7 @@ function NewCalc(){
                     // minus, as otherwise it is the start of a negative number
                     if(this._expr.last() === "-") this._expr.pop()
                 } else {
-                    if(isOp(this._expr.last())){
-                        this._expr.pop() // delete prev operator
-                        if(isOp(this._expr.last())) this._expr.pop() // both if there's two
-                    } 
+                    popOps(this._expr);
                 }                
             }
             this._expr.push(character);
@@ -99,6 +104,8 @@ function NewCalc(){
         evaluate() {
             // If we have been parsing a number finish doing that
             if(this.isNum){ consolidateNum(this._expr); }
+            // If we have trailing operators, get rid of them.
+            popOps(this._expr);
             // Apply operations until expression has no more operators
             // Evaluate Left to Right
             while(nextOPS(this._expr,"*","/")){ // mul & div 1st

@@ -86,7 +86,7 @@ DONE
 
     Added keyboard control
 
-    Have the calculator centered
+    Have the calculator centred.
     Detect horiz/vert screen and change button layout accordingly
 
     Tab focus is barely visible, make it much more obvious
