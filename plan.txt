@@ -39,10 +39,14 @@ ACTIONS
 
 ACCESSIBILITY CONCERNS
 
-    Calc does not include a relative size so text does not scale when zoomed. That said the text is as large as it can get without breaking the layout. That said in full
-    screen it doesn't fit so well and can't, as of yet, be zoomed out.
-
     Tab navigation is not optimal and presents some tricky issues of its own. As calc can be Probably operated with the keyboard keys it may be best to remove it from the tab order altogether.
+
+        BUT!!!
+        BUT!!!
+        BUT!!!
+
+            Of course it wouldn't be that easy. It turns out Orca captures the number keys for
+            it's own purposes and I can't see any way of changing that in the settings.
 
     How best to make the calculation results available to screen readers? Aria live-regions may be of some use. We don't want the full display reading out every time, only when queried or when the equals button is pressed. On the face of it the status role seems appropriate. Polite and atomic may also be relevant.
 
@@ -90,5 +94,8 @@ DONE
     Detect horiz/vert screen and change button layout accordingly
 
     Tab focus is barely visible, make it much more obvious
+
+    Calc does not include a relative size so text does not scale when zoomed. That said the text is as large as it can get without breaking the layout. That said in full
+    screen it doesn't fit so well and can't, as of yet, be zoomed out.
 
 
