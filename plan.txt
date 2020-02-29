@@ -28,16 +28,7 @@ PLAN
                 Check on phone sizes
 
 
-ACTIONS
-
-        Have a max width/height
-
-        Make it so very long numbers don't break the l/r padding
-            Design questions...
-            What should be the length of the display?
-            Should we limit the length of expressions to this?
-
-ACCESSIBILITY CONCERNS
+ACTIONS - ACCESSIBILITY CONCERNS
 
     Tab navigation is not optimal and presents some tricky issues of its own. As calc can be Probably operated with the keyboard keys it may be best to remove it from the tab order altogether.
 
@@ -113,4 +104,8 @@ DONE
     Calc does not include a relative size so text does not scale when zoomed. That said the text is as large as it can get without breaking the layout. That said in full
     screen it doesn't fit so well and can't, as of yet, be zoomed out.
 
-
+    Make it so very long numbers don't break the l/r padding
+        Design questions...
+        What should be the length of the display?
+        Should we limit the length of expressions to this?
+            Nope we should allow arbitrary length and add horizontal scrolling when needed!

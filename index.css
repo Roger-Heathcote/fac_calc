@@ -36,11 +36,15 @@ button{
     background-color: black;
     color: white;
     font-family: monospace;
-    font-size: calc(1rem * var(--SCALINGFACTOR));
+    font-size: calc(0.7rem * var(--SCALINGFACTOR));
     height: calc(2rem * var(--SCALINGFACTOR));
     line-height: calc(2rem * var(--SCALINGFACTOR));
     text-align: right;
     padding: 0em 0.2em 0.2em 0em;
+    box-sizing: content-box;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    direction:rtl;
 }
 #buttons {
     display: grid;
