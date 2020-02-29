@@ -8,12 +8,12 @@ html {
 *, *:before, *:after {
     box-sizing: inherit;
 }
+body { --SCALINGFACTOR: 0.5; }
 body, h1, h2, h3, h4, h5, h6, p, ol, ul {
     margin: 0;
     padding: 0;
     font-weight: normal;
     font-size: calc(32px + 5vw);
-
 }
 ol, ul {
     list-style: none;
@@ -24,23 +24,21 @@ img {
 }
 button{
     /* font-size: calc(10px+var(--CALC-WIDTH)/10); */
-    font-size: 1rem;
+    font-size: calc(1rem * var(--SCALINGFACTOR));
 }
 #calc{
     /* width: calc(10px + var(--CALC-WIDTH)); */
-    width: 10rem;
+    width: calc(10rem * var(--SCALINGFACTOR));
     margin: auto;
+    /* Can't set the damn height here!!! */
 }
 #display{
     background-color: black;
     color: white;
     font-family: monospace;
-    /* font-size: calc(10px+var(--CALC-WIDTH)/10); */
-    font-size: 1rem;
-    /* height: calc(10px+var(--CALC-WIDTH) / 5); */
-    height: 2rem;
-    /* line-height: calc(10px+var(--CALC-WIDTH) / 5); */
-    line-height: 2rem;
+    font-size: calc(1rem * var(--SCALINGFACTOR));
+    height: calc(2rem * var(--SCALINGFACTOR));
+    line-height: calc(2rem * var(--SCALINGFACTOR));
     text-align: right;
     padding: 0em 0.2em 0.2em 0em;
 }
@@ -70,11 +68,12 @@ button{
 button:focus, button    :hover {
     background-color: red;
     text-decoration: none;
-  }
+}
 
 
 @media all and (orientation:portrait) { 
     body {background-color: red;}
+    body { --SCALINGFACTOR: 1; }
     #buttons {
         grid-template-areas: "cl di mu su"
         "se ei ni ad"
@@ -82,11 +81,12 @@ button:focus, button    :hover {
         "on tw th eq"
         "ze ze de eq";
         /* height: calc(10px+var(--CALC-WIDTH)); */
-        height: 10rem;
+        /* height: 10rem; */
     }
 }
 @media all and (orientation:landscape) {
     body {background-color: green;}
+    body { --SCALINGFACTOR: 0.75; }
     #buttons {
         grid-template-areas:
         "se ei ni su cl"
@@ -94,6 +94,6 @@ button:focus, button    :hover {
         "on tw th ad eq"
         "ze ze de ad eq";
         /* height: calc(10px+var(--CALC-WIDTH)/2); */
-        height: 5rem;
+        /* height: 1.5rem; */
     }
 }
