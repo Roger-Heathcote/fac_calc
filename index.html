@@ -7,9 +7,11 @@
         <script src="calc.js"></script>
     </head>
     <body>
-        <h1>Calculator!</h1>
+        <h1>An ugly but functional calculator.</h1>
         <div id="calc">
-            <div id="display"></div>
+            <div id="display_wrapper">
+                <div id="display"></div>
+            </div>
             <div id="buttons">
                 <button type="button" id="zero">0</button>
                 <button type="button" id="one">1</button>
@@ -38,11 +40,13 @@
             if(allowedChars.test(character)) CALC.add_char(character);
             if(character === "=" || character === "Enter") CALC.equals;
             if (character === "Delete" || character === "AC") CALC.clear();
+            console.log("addAndUpdate - CALC.display:", CALC.display)
             display.innerHTML = CALC.display;
         } 
         let CALC = NewCalc();
         document.body.onclick = (event) => addAndUpdate(event.target.innerHTML);
         document.body.onkeydown = (event) => addAndUpdate(event.key);
+        console.log("initial - CALC.display:", CALC.display)
         display.innerHTML = CALC.display;
     </script>
 </html>

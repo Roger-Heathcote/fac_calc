@@ -8,12 +8,19 @@ html {
 *, *:before, *:after {
     box-sizing: inherit;
 }
-body { --SCALINGFACTOR: 0.5; }
+body {
+    --SCALINGFACTOR: 0.5;
+    font-size: calc(32px + 5vw);
+}
 body, h1, h2, h3, h4, h5, h6, p, ol, ul {
     margin: 0;
     padding: 0;
+    font-size: 0.5rem;
     font-weight: normal;
-    font-size: calc(32px + 5vw);
+}
+h1{
+    text-align: center;
+    color: white;
 }
 ol, ul {
     list-style: none;
@@ -32,7 +39,13 @@ button{
     margin: auto;
     /* Can't set the damn height here!!! */
 }
+#display_wrapper{
+    /* direction:rtl; */
+    box-sizing: content-box;
+}
 #display{
+    overflow-y: hidden;
+    overflow-x: scroll;
     background-color: black;
     color: white;
     font-family: monospace;
@@ -41,10 +54,7 @@ button{
     line-height: calc(2rem * var(--SCALINGFACTOR));
     text-align: right;
     padding: 0em 0.2em 0.2em 0em;
-    box-sizing: content-box;
-    overflow-y: hidden;
-    overflow-x: scroll;
-    direction:rtl;
+    /* direction:ltr; */
 }
 #buttons {
     display: grid;

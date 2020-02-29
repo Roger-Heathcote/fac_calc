@@ -100,6 +100,7 @@ function NewCalc(){
                 }                
             }
             this._expr.push(character);
+            console.log("this._expr", this._expr);
         }
         evaluate() {
             // If we have been parsing a number finish doing that
@@ -124,7 +125,9 @@ function NewCalc(){
             return this.accumulator.toString();
         }
         get display() {
-            return this._expr.join("") || "0";
+            let to_display = this._expr.join("") || "0";
+            console.log("display:", to_display);
+            return to_display;
         }
     }
     return new Calculator();
