@@ -47,13 +47,21 @@ ACCESSIBILITY CONCERNS
 
             Of course it wouldn't be that easy. It turns out Orca captures the number keys for
             it's own purposes and I can't see any way of changing that in the settings.
+            It only captures digits 1 through 6
+            These keys are not mentioned in Orca's keybindings!!
+
             It does however read out the buttons as tey are clicked with the mouse and does read
             out the results of the calculation.
 
             And then it turns out that's only in Firefox!
 
             Chromium does see the digits typed on keyboard BUT it doesn't say them out loud
-            whether they are clicked or typed!
+            whether they are clicked or typed! This is seemingly because Orca simply doesn't
+            work with Chromium!
+
+            Not much I can do about Chromium but, in the absence of an Orca forum to ask on, I
+            have filed a bug (more of a question) here...
+            https://gitlab.gnome.org/GNOME/orca/issues/100
 
     How best to make the calculation results available to screen readers? Aria live-regions may be of some use. We don't want the full display reading out every time, only when queried or when the equals button is pressed. On the face of it the status role seems appropriate. Polite and atomic may also be relevant.
 
