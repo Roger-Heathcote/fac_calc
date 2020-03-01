@@ -100,7 +100,7 @@ function NewCalc(){
                 }                
             }
             this._expr.push(character);
-            console.log("this._expr", this._expr);
+            // console.log("this._expr", this._expr);
         }
         evaluate() {
             // If we have been parsing a number finish doing that
